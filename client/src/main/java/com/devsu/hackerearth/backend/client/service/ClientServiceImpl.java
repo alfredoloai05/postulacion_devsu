@@ -179,12 +179,15 @@ public class ClientServiceImpl implements ClientService {
 		Client client = clientRepository.findById(id)
 			.orElse(null);
 
-		if (clientSyncPublisher != null){
-			clientSyncPublisher.publish(
-				client.getId(),
-				client.getName(),
-				false
-				);
-		}
+		if (client != null){
+			clientRepository.deleteById(id);
+			if (clientSyncPublisher != null){
+				clientSyncPublisher.publish(
+					client.getId(),
+					client.getName(),
+					false
+					);
+			}
+		}	
 	}
 }
